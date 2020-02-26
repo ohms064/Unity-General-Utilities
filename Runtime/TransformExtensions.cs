@@ -69,10 +69,7 @@ namespace OhmsLibraries.Utilities.Extensions {
                 longitude = Mathf.Atan( vector.z / vector.x ) * Mathf.Rad2Deg;
             }
             latitude = Mathf.Asin( vector.y / magnitude ) * Mathf.Rad2Deg;
-            if ( vector.x < 0f && vector.z < 0f ) {
-                longitude += 270f;
-            }
-            else if ( vector.x < 0f ) {
+            if ( vector.x < 0f ) {
                 longitude += 180f;
             }
 
