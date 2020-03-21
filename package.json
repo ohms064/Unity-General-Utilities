@@ -1,7 +1,7 @@
 {
     "name": "com.ohms.utilities",
     "displayName": "General Utilities",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "unity": "2019.1",
     "description": "Transform extensions and events.",
     "keywords": ["ohms", "utilities"],
