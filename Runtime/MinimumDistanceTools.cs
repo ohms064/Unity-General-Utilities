@@ -14,6 +14,26 @@ namespace OhmsLibraries.Utilities.Extensions {
         private static float MinimumDistanceCondition( Vector3 origin, Vector3 other ) {
             return ( Vector3.Dot( origin, other ) - 0.5f * Vector3.Dot( other, other ) );
         }
+        
+        /// <summary>
+        /// Obtiene el punto más próximo a origin.
+        /// Si dos puntos están a la misma distancia se retorna el primero encontrado.
+        /// </summary>
+        /// <param name="origin">El punto de referencia</param>
+        /// <param name="points">La lista de puntos que se buscará el más cercano.</param>
+        /// <returns>El indice del punto más cercano en la lista.</returns>
+        public static int GetClosest ( this Vector3 origin, Vector3[] points ) {
+            int index = 0;
+            var comp = MinimumDistanceCondition( origin, points[0] );
+            for ( int i = 1; i < points.Length; i++ ) {
+                var cond = MinimumDistanceCondition( origin, points[i] );
+                if ( cond > comp ) {
+                    index = i;
+                    comp = cond;
+                }
+            }
+            return index;
+        }
 
         /// <summary>
         /// Obtiene el Transform más próxima a origin.
@@ -22,7 +42,7 @@ namespace OhmsLibraries.Utilities.Extensions {
         /// <param name="origin">El Transform de referencia</param>
         /// <param name="points">La lista de Transform que se buscará el más cercano.</param>
         /// <returns>El indice del transform más cercano en la lista.</returns>
-        public static int GetClosest( this Transform origin, params Transform[] points ) {
+        public static int GetClosest( this Transform origin, Transform[] points ) {
             int index = 0;
             var comp = MinimumDistanceCondition( origin.position, points[0].position );
             for ( int i = 1; i < points.Length; i++ ) {
