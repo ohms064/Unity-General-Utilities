@@ -13,6 +13,11 @@ namespace OhmsLibraries.Utilities.Extensions {
 
         public SphereCoordinate( Vector3 vector ) {
             magnitude = vector.magnitude;
+            if( magnitude == 0 ){
+                longitude = 0f;
+                latitude = 0f;
+                return;
+            }
             if ( vector.x == 0 ) {
                 if ( vector.z == 0f ) {
                     longitude = 0f;
@@ -54,6 +59,11 @@ namespace OhmsLibraries.Utilities.Extensions {
 
         public void UpdateCoord( Vector3 vector ) {
             magnitude = vector.magnitude;
+            if( magnitude == 0 ){
+                longitude = 0f;
+                latitude = 0f;
+                return;
+            }
             if ( vector.x == 0 ) {
                 if ( vector.z == 0f ) {
                     longitude = 0f;
