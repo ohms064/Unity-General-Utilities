@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 namespace OhmsLibraries.Utilities.Extensions {
+    public interface IPointForMinimumDistance
+    {
+        Vector3 GetVector3();
+    }
+    
     public static class MinimumDistanceTools_Extensions {
         /// <summary>
         /// Valor para determinar si un punto está mas cerca respecto a otro usando una operación lineal derivada de 
@@ -11,8 +16,25 @@ namespace OhmsLibraries.Utilities.Extensions {
         /// <param name="origin">Lo posición origen con la que se harán las comparaciones.</param>
         /// <param name="other">La posición a ordenar.</param>
         /// <returns>Resultado de la operación, entre mayor el valor más cerca el punto other a origin.</returns>
-        private static float MinimumDistanceCondition( Vector3 origin, Vector3 other ) {
+        public static float MinimumDistanceCondition( Vector3 origin, Vector3 other ) {
             return ( Vector3.Dot( origin, other ) - 0.5f * Vector3.Dot( other, other ) );
+        }
+
+        public static int GetClosest(this Vector3 origin, IEnumerable<IPointForMinimumDistance> points)
+        {
+            int index = -1;
+            int i = 0;
+            var comp = float.MinValue;
+            foreach ( var p in points ) {
+                var cond = MinimumDistanceCondition( origin, p.GetVector3() );
+                if ( cond > comp ) {
+                    index = i;
+                    comp = cond;
+                }
+
+                i++;
+            }
+            return index;
         }
         
         /// <summary>
@@ -169,6 +191,26 @@ namespace OhmsLibraries.Utilities.Extensions {
                 }
             }
             return index;
+        }
+
+        /// <summary>
+        /// Sorts an array of Vector3 points by their distance to an origin point, from closest to furthest.
+        /// </summary>
+        /// <param name="points">The array of points to sort. The array is sorted in-place.</param>
+        /// <param name="origin">The reference point to measure distance from.</param>
+        public static void SortByProximity( this Vector3[] points, Vector3 origin ) {
+            System.Array.Sort( points, ( a, b ) =>
+                MinimumDistanceCondition( origin, b ).CompareTo( MinimumDistanceCondition( origin, a ) ) );
+        }
+
+        /// <summary>
+        /// Sorts an array of Transforms by their distance to an origin point, from closest to furthest.
+        /// </summary>
+        /// <param name="points">The array of transforms to sort. The array is sorted in-place.</param>
+        /// <param name="origin">The reference point to measure distance from.</param>
+        public static void SortByProximity( this Transform[] points, Vector3 origin ) {
+            System.Array.Sort( points, ( a, b ) =>
+                MinimumDistanceCondition( origin, b.position ).CompareTo( MinimumDistanceCondition( origin, a.position ) ) );
         }
     }
 }
