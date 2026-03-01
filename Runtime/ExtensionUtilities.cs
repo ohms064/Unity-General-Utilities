@@ -31,5 +31,9 @@ namespace OhmsLibraries.Utilities.Extensions {
             }
             return list;
         }
+
+        public static bool ContainsAny<T>( this IEnumerable<T> source, IEnumerable<T> other ) {
+            return source.Any( other.Contains );
+        }
     }
 }
